@@ -1,6 +1,6 @@
 from customtkinter import CTkLabel, CTkButton, CTkFrame, filedialog
 
-from summarizer import ArticleSummarizer
+from backend.file_summarizer import ArticleSummarizer
 
 
 class SummarizeFrame(CTkFrame):
