@@ -23,7 +23,7 @@ class Navigation(CTkFrame):
             text_color=("gray10", "gray90"),
             hover_color=("gray70", "gray30"),
             anchor="w",
-            command=lambda: self.handle_button_click("search_frame")
+            command=lambda: self._render_frame("search_frame")
         )
         self.search_frame_button.grid(row=1, column=0, sticky="ew")
 
@@ -37,9 +37,14 @@ class Navigation(CTkFrame):
             text_color=("gray10", "gray90"),
             hover_color=("gray70", "gray30"),
             anchor="w",
-            command=lambda: self.handle_button_click("summarize_frame")
+            command=lambda: self._render_frame("summarize_frame")
         )
         self.summarize_frame_button.grid(row=2, column=0, sticky="ew")
 
-    def handle_button_click(self, frame_name):
+    def _render_frame(self, frame_name: str) -> None:
+        """Renders Frame to be shown
+
+        Args:
+            frame_name (str): frame name to be show
+        """
         self.master.render_frame(frame_name)

@@ -2,6 +2,7 @@ import customtkinter
 from customtkinter import CTkFrame
 
 from frontend.components.navigation import Navigation
+from frontend.components.search_frame import SearchFrame
 from frontend.components.summarize_frame import SummarizeFrame
 
 customtkinter.set_appearance_mode("dark")
@@ -21,11 +22,12 @@ class App(customtkinter.CTk):
         self.navigation_frame.grid(row=0, column=0, sticky="nsew")
         self.navigation_frame.grid_rowconfigure(4, weight=1)
 
+        self.search_frame = SearchFrame(master=self)
         self.summarize_frame = SummarizeFrame(master=self)
 
-        self.render_frame()
+        self.render_frame(frame_name="summarize_frame")
 
-    def render_frame(self, frame_name="summarize_frame"):
+    def render_frame(self, frame_name: str) -> None:
         ignore_widgets = [self.navigation_frame]
         self.navigation_frame.search_frame_button.configure(
             fg_color=("gray75", "gray25") if frame_name == "search_frame" else "transparent"
@@ -42,8 +44,6 @@ class App(customtkinter.CTk):
             frame.grid(row=0, column=1, sticky="nsew")
             ignore_widgets.append(frame)
 
-        map(lambda widget: self.unrender_frame(widget, ignore_widgets), self.winfo_children())
-
-    def unrender_frame(self, widget, ignore_widgets):
-        if widget not in ignore_widgets and type(widget) is CTkFrame:
-            widget.grid_forget()
+        for widget in self.winfo_children():
+            if widget not in ignore_widgets and issubclass(type(widget), CTkFrame):
+                widget.grid_forget()
