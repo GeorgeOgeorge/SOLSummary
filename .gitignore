@@ -167,3 +167,5 @@ temp/*.jpg
 temp/*.png
 
 *.pdf
+
+ollama/

@@ -1,0 +1,21 @@
+version: "3.8"
+
+# networks:
+#   ollama-docker:
+#     external: false
+
+services:
+
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - 6969:6969
+    volumes:
+      - ./ollama/ollama:/root/.ollama
+    container_name: ollama
+    pull_policy: always
+    tty: true
+    restart: always
+    # networks:
+      # - ollama-docker
+

@@ -1,5 +1,6 @@
 import os
 import re
+import requests
 
 import cv2
 from pdf2image import convert_from_path
@@ -41,7 +42,7 @@ class ArticleSummarizer:
             pass
 
         self.write_file(
-            temp_text_list=self._text_from_doc(),
+            final_text=self._text_from_doc(),
             output_path=output_path,
             original_abstarct=abstract
         )
@@ -84,30 +85,23 @@ class ArticleSummarizer:
 
         return document_dict
 
-    def _text_from_doc(self) -> list[str]:
+    def _text_from_doc(self) -> str:
         """_summary_
 
         Returns:
             list[str]: _description_
         """
-        final_text = []
-
-        for topico, text in self.doc.items():
-            if text:
-                result = self.text_summarizer._split_text(text)
-
-                if len(result) > 1:
-                    self.doc[topico] = " ".join([self.text_summarizer._summary_text(text) for text in result])
-                else:
-                    self.doc[topico] = self.text_summarizer._summary_text(result[0])
-
-                final_text.extend(result)
+        final_text = " ".join(
+            text
+            for topico, text in self.doc.items()
+            if any(sub.upper() in topico.upper() for sub in ("intro", "conclu", 'resul'))
+        )
 
         return final_text
 
     def write_file(
         self,
-        temp_text_list: list[str],
+        final_text: str,
         output_path: str,
         original_abstarct: str | None = "",
     ) -> None:
@@ -116,12 +110,18 @@ class ArticleSummarizer:
         Args:
             temp_text_list (list[str]): _description_
             output_path (str): _description_
-            original_abstarct (str | None, optional): _description_. Defaults to "".
+            original_abstarct (str | None, optional): _description_. Defaults to " ".
         """
-        final_text = " ".join([
-            self.text_summarizer._summary_text(text)
-            for text in self.text_summarizer._split_text(" ".join(temp_text_list))
-        ])
+        prompt = f"""
+            please create a summary with 150-200 words, with the following content,
+            only return result text, no introduction: {final_text}
+        """
+        print("começando resumo")
+        final_text = requests.post(
+            "http://localhost:6969/api/generate",
+            json={"model": "llama3", "prompt": prompt, "stream": False}
+        ).json().get("response", "")
+        print("terminou resumo")
 
         with open(f"{output_path}/arquivo.txt", "w") as file:
             file.write("-"*20 + " original abstract " + "-"*20 + "\n")
