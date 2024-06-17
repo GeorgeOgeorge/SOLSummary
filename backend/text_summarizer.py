@@ -11,8 +11,9 @@ class TextSummarizer:
     _MODEL_NAME: str = "facebook/bart-large-cnn"
 
     def __init__(self) -> None:
-        self._model = BartForConditionalGeneration.from_pretrained(self._MODEL_NAME)
-        self._tokenizer = BartTokenizer.from_pretrained(self._MODEL_NAME)
+        # self._model = BartForConditionalGeneration.from_pretrained(self._MODEL_NAME)
+        # self._tokenizer = BartTokenizer.from_pretrained(self._MODEL_NAME)
+        pass
 
     def _extract_contour_text(self, image: ndarray, contour: list[tuple[int, int]]) -> str:
         """Extracts text from a contour.

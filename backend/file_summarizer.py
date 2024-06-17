@@ -33,7 +33,7 @@ class ArticleSummarizer:
         ]
 
         self.doc = self._document_as_dict(page_info)
-        abstract = self.doc.pop("abstract")
+        abstract = self.doc.pop("abstract", "")
 
         try:
             del self.doc['misc']
@@ -113,8 +113,10 @@ class ArticleSummarizer:
             original_abstarct (str | None, optional): _description_. Defaults to " ".
         """
         prompt = f"""
-            please create a summary with 150-200 words, with the following content,
-            only return result text, no introduction: {final_text}
+            create a single paragraph summarizing the text using MUST HAVE 150 and 200 words in a scientific paper abstract style,
+            Ignore any references to another articles, use formal language.
+            \n
+            Text to summarize: {final_text}
         """
         print("começando resumo")
         final_text = requests.post(
