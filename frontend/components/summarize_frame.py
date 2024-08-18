@@ -14,7 +14,7 @@ class SummarizeFrame(CTkFrame):
         self.select_article_button = CTkButton(
             master=self,
             command=self.select_file_path,
-            text="escolha artigo",
+            text="Escolha artigo",
             font=("roboto", 13.5)
         )
         self.select_article_button.grid(row=0, column=0)
@@ -29,14 +29,14 @@ class SummarizeFrame(CTkFrame):
         self.select_output_button = CTkButton(
             master=self,
             command=self.select_output_path,
-            text="escolha local de saide de pdf",
+            text="Escolha local de saide de pdf",
             font=("roboto", 13.5)
         )
         self.select_output_button.grid(row=2, column=0)
 
         self.chosen_output_label = CTkLabel(
             master=self,
-            text="escolha local se salvamento do resumo",
+            text="Escolha local de salvamento do resumo",
             font=("roboto", 13.5)
         )
         self.chosen_output_label.grid(row=3, column=0)
